@@ -31,11 +31,11 @@ const DashboardLayoutRoot = styled("div")(({ theme }) => ({
 export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
     const [isSidebarOpen, openSidebar, closeSidebar] = useDialog();
     const [openChatbot, setOpenChatbot] = useState(false);
-    const [userId, setUserId] = useState<number | null>(null);
+    // const [userId, setUserId] = useState<number | null>(null);
 
     const toggleChatbot = () => {
-        const uniqueUserId = Math.floor(Math.random()*1000000)
-        setUserId(uniqueUserId)
+        // const uniqueUserId = Math.floor(Math.random()*1000000)
+        // setUserId(uniqueUserId)
         setOpenChatbot(!openChatbot);
     };
 
@@ -87,7 +87,7 @@ export const DashboardLayout: FC<DashboardLayoutProps> = ({ children }) => {
                 }}
             >
                 <DialogContent sx={{paddingX:0 , paddingTop:0 , paddingBottom:"0px" ,height: "34rem"}} >
-                    <ChatbotPage userId={userId} />
+                    <ChatbotPage />
                 </DialogContent>
             </Dialog>
         </>

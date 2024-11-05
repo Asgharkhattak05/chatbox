@@ -18,7 +18,7 @@ const Profile: NextPage = () => {
     const { data: profile } = useProfileQuery();
     const { pushTab } = useTabsContext();
     const [tab, setTab] = useState(0);
-
+   console.log(profile)
     const isAdmin = profile?.isAdmin;
 
     useEffect(() => {

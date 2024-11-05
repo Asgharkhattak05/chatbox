@@ -1,16 +1,19 @@
+import { useProfileQuery } from "@/services/user";
 import { Box, Typography, TextField, Button, CircularProgress } from "@mui/material";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 
-interface ChatbotPageProps {
-    userId: number | null; // Accept userId as a prop
-}
+// interface ChatbotPageProps {
+//     userId: number | null; // Accept userId as a prop
+// }
 interface Message {
     type: "user" | "bot";
     text: string;
 }
-const ChatbotPage = ({ userId }: ChatbotPageProps) => {
-    console.log(userId)
+const ChatbotPage = () => {
+    const { data: profile } = useProfileQuery();
+    console.log(profile)
+    // console.log(userId)
     const [query, setQuery] = useState("");
     const [messages, setMessages] = useState<Message[]>([]);
     const [loading, setLoading] = useState(false);
@@ -26,10 +29,11 @@ const ChatbotPage = ({ userId }: ChatbotPageProps) => {
             setLoading(true);
 
             try {
-                console.log(userId)
+                console.log(profile?.id)
                 const response = await axios.post("https://aidrawing.rentaghr.com/askdb", {
                     user_query: query,
-                    user_id: userId,
+                    user_id: profile?.id
+                    ,
                 });
 
                 setMessages((prevMessages) => [
@@ -147,7 +151,7 @@ const ChatbotPage = ({ userId }: ChatbotPageProps) => {
                         fullWidth
                         value={query}
                         onChange={(e) => setQuery(e.target.value)}
-                        onKeyPress={(e) => {
+                        onKeyDown={(e) => {
                             if (e.key === "Enter") handleSendMessage();
                         }}
                         sx={{ backgroundColor: "white", borderRadius:"10px" }}
