@@ -1,5 +1,13 @@
 import { useProfileQuery } from "@/services/user";
-import { Box, Typography, TextField, Button, CircularProgress } from "@mui/material";
+import Markdown from "markdown-to-jsx";
+
+import {
+    Box,
+    Typography,
+    TextField,
+    Button,
+    CircularProgress,
+} from "@mui/material";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 
@@ -12,7 +20,7 @@ interface Message {
 }
 const ChatbotPage = () => {
     const { data: profile } = useProfileQuery();
-    console.log(profile)
+    console.log(profile);
     // console.log(userId)
     const [query, setQuery] = useState("");
     const [messages, setMessages] = useState<Message[]>([]);
@@ -29,12 +37,14 @@ const ChatbotPage = () => {
             setLoading(true);
 
             try {
-                console.log(profile?.id)
-                const response = await axios.post("https://aidrawing.rentaghr.com/askdb", {
-                    user_query: query,
-                    user_id: profile?.id
-                    ,
-                });
+                console.log(profile?.id);
+                const response = await axios.post(
+                    "https://aidrawing.rentaghr.com/askdb",
+                    {
+                        user_query: query,
+                        user_id: profile?.id,
+                    }
+                );
 
                 setMessages((prevMessages) => [
                     ...prevMessages,
@@ -44,7 +54,10 @@ const ChatbotPage = () => {
                 console.error("Error fetching chatbot response:", error);
                 setMessages((prevMessages) => [
                     ...prevMessages,
-                    { type: "bot", text: "Sorry, there was an error. Please try again later." },
+                    {
+                        type: "bot",
+                        text: "Sorry, there was an error. Please try again later.",
+                    },
                 ]);
             } finally {
                 setLoading(false);
@@ -72,14 +85,14 @@ const ChatbotPage = () => {
                 sx={{
                     width: "100%",
                     padding: "0.5rem",
-                    background: "linear-gradient(to bottom right, #2732DD, #09a6f7)",
+                    background:
+                        "linear-gradient(to bottom right, #2732DD, #09a6f7)",
                     color: "#fff",
                     textAlign: "center",
                 }}
             >
                 <Typography variant="h5">ChatBot</Typography>
             </Box>
-
 
             <Box
                 sx={{
@@ -112,7 +125,10 @@ const ChatbotPage = () => {
                             key={index}
                             sx={{
                                 display: "flex",
-                                justifyContent: message.type === "user" ? "flex-end" : "flex-start",
+                                justifyContent:
+                                    message.type === "user"
+                                        ? "flex-end"
+                                        : "flex-start",
                                 mb: 1,
                                 fontSize: "0.9rem",
                             }}
@@ -121,23 +137,38 @@ const ChatbotPage = () => {
                                 sx={{
                                     padding: 1,
                                     borderRadius: 1,
-                                    background: message.type === "user"
-                                        ? "linear-gradient(to bottom right, #a1cca2, #81C784)"
-                                        : "linear-gradient(to bottom right, #82c1f2, #64B5F6)",
-                                    maxWidth: index === 0 && message.type === "bot" ? "100%" : "75%",
-                                    width: index === 0 && message.type === "bot" ? "100%" : "auto",
+                                    background:
+                                        message.type === "user"
+                                            ? "linear-gradient(to bottom right, #a1cca2, #81C784)"
+                                            : "linear-gradient(to bottom right, #82c1f2, #64B5F6)",
+                                    maxWidth:
+                                        index === 0 && message.type === "bot"
+                                            ? "100%"
+                                            : "75%",
+                                    width:
+                                        index === 0 && message.type === "bot"
+                                            ? "100%"
+                                            : "auto",
                                 }}
                             >
-                                {message.text}
+                                <Markdown>{message.text}</Markdown>
                             </Box>
-
-
                         </Box>
                     ))}
                     {loading && (
-                        <Box sx={{ display: "flex", alignItems: "center", justifyContent: "start", mt: 2 }}>
+                        <Box
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "start",
+                                mt: 2,
+                            }}
+                        >
                             <CircularProgress size={20} />
-                            <Typography variant="body2" sx={{ ml: 1, fontSize: "1rem" }}>
+                            <Typography
+                                variant="body2"
+                                sx={{ ml: 1, fontSize: "1rem" }}
+                            >
                                 loading...
                             </Typography>
                         </Box>
@@ -145,7 +176,17 @@ const ChatbotPage = () => {
                     <div ref={messagesEndRef} />
                 </Box>
 
-                <Box sx={{ display: "flex", gap: 1, width: "100%", maxWidth: "700px", paddingX: "4px", position: "absolute", bottom: 0 }}>
+                <Box
+                    sx={{
+                        display: "flex",
+                        gap: 1,
+                        width: "100%",
+                        maxWidth: "700px",
+                        paddingX: "4px",
+                        position: "absolute",
+                        bottom: 0,
+                    }}
+                >
                     <TextField
                         placeholder="Enter your query..."
                         fullWidth
@@ -154,7 +195,7 @@ const ChatbotPage = () => {
                         onKeyDown={(e) => {
                             if (e.key === "Enter") handleSendMessage();
                         }}
-                        sx={{ backgroundColor: "white", borderRadius:"10px" }}
+                        sx={{ backgroundColor: "white", borderRadius: "10px" }}
                     />
                     <Button
                         variant="contained"
