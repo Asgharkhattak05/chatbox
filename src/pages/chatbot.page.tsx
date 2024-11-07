@@ -20,7 +20,7 @@ interface Message {
 }
 const ChatbotPage = () => {
     const { data: profile } = useProfileQuery();
-    console.log(profile);
+    // console.log(profile);
     // console.log(userId)
     const [query, setQuery] = useState("");
     const [messages, setMessages] = useState<Message[]>([]);
@@ -91,7 +91,7 @@ const ChatbotPage = () => {
                     textAlign: "center",
                 }}
             >
-                <Typography variant="h5">ChatBot</Typography>
+                <Typography variant="h5">Hestia</Typography>
             </Box>
 
             <Box
