@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 // interface ChatbotPageProps {
 //     userId: number | null; // Accept userId as a prop
@@ -23,7 +24,22 @@ const ChatbotPage = () => {
     // console.log(profile);
     // console.log(userId)
     const [query, setQuery] = useState("");
-    const [messages, setMessages] = useState<Message[]>([]);
+    const [messages, setMessages] = useState<Message[]>([
+        { type: "user", text: "Hello, how are you?" },
+        {
+            type: "bot",
+            text: "I'm good, thank you! How can I assist you today? Feel free to ask me anything.",
+        },
+        { type: "user", text: "Tell me about AI." },
+        {
+            type: "bot",
+            text: "Artificial Intelligence (AI) refers to the simulation of human intelligence in machines. AI enables computers to perform tasks that usually require human intelligence, such as learning, problem-solving, and decision-making. It has applications in various fields like healthcare, finance, and technology, providing numerous benefits but also raising ethical considerations.",
+        },
+        {
+            type: "bot",
+            text: " hdfje eirjweiofjweif wefijwe if weif weif weif weihf wefh weif we fwe fwe fwe fweifuweifhwepfhorifuhweruifhwei fweuf weufwefhsdufhwe dfhwe fuwehfweu fweuf weuf weufh weuifhweihf wehf wehf weif ufhef fiwefweifsdhfsdi fsdfi sdifsdi fsdifisd f sdfsd fi sdif sdifisdfsdfusdifu sdif sdif sd fsd f sd fisdu fsdpoufyhsudfhsd sd Artificial Intelligence (AI) refers to the simulation of human intelligence in machines. AI enables computers to perform tasks that usually require human intelligence, such as learning, problem-solving, and decision-making. It has applications in various fields like healthcare, finance, and technology, providing numerous benefits but also raising ethical considerations.",
+        },
+    ]); // Pre-filled dummy messages
     const [loading, setLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -65,6 +81,12 @@ const ChatbotPage = () => {
         }
     };
 
+    const truncateText = (text: string, maxLength: number): string => {
+        if (text.length <= maxLength) return text;
+        return text.slice(0, maxLength) + "...";
+    };
+
+
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages]);
@@ -80,7 +102,6 @@ const ChatbotPage = () => {
                 position: "relative",
             }}
         >
-            {/* Gradient Header */}
             <Box
                 sx={{
                     width: "100%",
@@ -141,17 +162,34 @@ const ChatbotPage = () => {
                                         message.type === "user"
                                             ? "linear-gradient(to bottom right, #a1cca2, #81C784)"
                                             : "linear-gradient(to bottom right, #82c1f2, #64B5F6)",
-                                    maxWidth:
-                                        index === 0 && message.type === "bot"
-                                            ? "100%"
-                                            : "75%",
-                                    width:
-                                        index === 0 && message.type === "bot"
-                                            ? "100%"
-                                            : "auto",
+                                    maxWidth: "75%",
                                 }}
                             >
-                                <Markdown>{message.text}</Markdown>
+                                {message.type === "bot" &&
+                                    message.text.length > 100 ? (
+                                    <>
+                                        <Markdown>
+                                            {truncateText(message.text, 100)}
+                                        </Markdown>
+                                        <Link
+                                            href={{
+                                                pathname: `/chatbotfullresponse`,
+                                                query: { text: message.text },
+                                            }}
+                                            onClick={() => {
+                                                localStorage.setItem("fullMessage", message.text);
+                                            }}
+                                            style={{
+                                                color: "blue",
+                                                textDecoration: "underline",
+                                            }}
+                                        >
+                                            View More
+                                        </Link>
+                                    </>
+                                ) : (
+                                    <Markdown>{message.text}</Markdown>
+                                )}
                             </Box>
                         </Box>
                     ))}

@@ -8,7 +8,8 @@ export const config = {
     runtime: "edge",
 };
 
-const baseUrl = `${process.env.BACKEND_API_URL}/integrations`;
+const baseUrl = `${process.env.NEXT_PUBLIC_API_URL}/integrations`;
+console.log(process.env.NEXT_PUBLIC_API_URL)
 
 interface IntegrationImage {
     id: number;
