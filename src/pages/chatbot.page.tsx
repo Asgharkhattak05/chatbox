@@ -24,22 +24,7 @@ const ChatbotPage = () => {
     // console.log(profile);
     // console.log(userId)
     const [query, setQuery] = useState("");
-    const [messages, setMessages] = useState<Message[]>([
-        { type: "user", text: "Hello, how are you?" },
-        {
-            type: "bot",
-            text: "I'm good, thank you! How can I assist you today? Feel free to ask me anything.",
-        },
-        { type: "user", text: "Tell me about AI." },
-        {
-            type: "bot",
-            text: "Artificial Intelligence (AI) refers to the simulation of human intelligence in machines. AI enables computers to perform tasks that usually require human intelligence, such as learning, problem-solving, and decision-making. It has applications in various fields like healthcare, finance, and technology, providing numerous benefits but also raising ethical considerations.",
-        },
-        {
-            type: "bot",
-            text: " hdfje eirjweiofjweif wefijwe if weif weif weif weihf wefh weif we fwe fwe fwe fweifuweifhwepfhorifuhweruifhwei fweuf weufwefhsdufhwe dfhwe fuwehfweu fweuf weuf weufh weuifhweihf wehf wehf weif ufhef fiwefweifsdhfsdi fsdfi sdifsdi fsdifisd f sdfsd fi sdif sdifisdfsdfusdifu sdif sdif sd fsd f sd fisdu fsdpoufyhsudfhsd sd Artificial Intelligence (AI) refers to the simulation of human intelligence in machines. AI enables computers to perform tasks that usually require human intelligence, such as learning, problem-solving, and decision-making. It has applications in various fields like healthcare, finance, and technology, providing numerous benefits but also raising ethical considerations.",
-        },
-    ]); // Pre-filled dummy messages
+    const [messages, setMessages] = useState<Message[]>([]);
     const [loading, setLoading] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -172,9 +157,11 @@ const ChatbotPage = () => {
                                             {truncateText(message.text, 100)}
                                         </Markdown>
                                         <Link
+                                            target="_blank"
+                                            rel="noopener noreferrer"
                                             href={{
                                                 pathname: `/chatbotfullresponse`,
-                                                query: { text: message.text },
+                                                query: { text: message.text, type: message.type },
                                             }}
                                             onClick={() => {
                                                 localStorage.setItem("fullMessage", message.text);
