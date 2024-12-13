@@ -25,7 +25,11 @@ const ExportButton: React.FC<Props> = ({ agreementId }) => {
         const pdf = await generatePDF(variant?.key!, language?.key!, formData);
         if (!pdf) return;
 
-        const blob = new Blob([pdf.buffer], { type: "application/pdf" });
+        // const blob = new Blob([pdf.buffer], { type: "application/pdf" });
+
+        const arrayBuffer = new Uint8Array(pdf.buffer);
+        const blob = new Blob([arrayBuffer], { type: "application/pdf" });
+
 
         downloadBlob(blob, `${title}.pdf`);
     };
